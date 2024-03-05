@@ -25,17 +25,19 @@ useEffect(()=>{
 
 }, [])
 
-const {image, name, teams, dob, description, nationality, number} = driver
+const {image, name, teams, dob, description, nationality, number, surname} = driver
+console.log(teams)
 return (
     <div>
         <img src={image} width="300" height="350"></img>
-<div> Name:{name && name.forename} {name && name.surname} </div>
+        <div> ID: {id} </div>
+<div> Name:{name} {surname} </div>
 <div>Dob: {dob}</div>
 <div> Nationality: {nationality}</div>
 {teams && (
-    <div> Teams: {teams}</div>
+    <div> Teams: {teams.join(', ')}</div>
 )}
-{number !== "\\N" && (
+{number && number !== "\\N" && (
 <div> Number: {number} </div>
 )}
 {description && (

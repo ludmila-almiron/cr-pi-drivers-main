@@ -1,7 +1,8 @@
 const {Driver} = require('../db')
 const {Team} = require('../db')
 const createDriver = async ({name, surname, description, image, nationality, dob, teams}) =>{
-    const newDriver = await Driver.create({
+    console.log(teams)
+    let newDriver = await Driver.create({
         name,
         surname,
         description,
@@ -9,10 +10,22 @@ const createDriver = async ({name, surname, description, image, nationality, dob
         nationality,
         dob
     })
-    newDriver.addTeams(teams)
-    return newDriver;
-
-    
+   await newDriver.addTeam(teams)
+   let newDriverWithTeams = await Driver.findByPk(newDriver.id, {
+    include: {
+        model: Team,
+        as: "teams",
+        attributes: ["name"],
+        through: {
+            attributes: []
+        }
+    }
+});
+newDriverWithTeams = {
+    ...newDriverWithTeams.toJSON(),
+    teams: newDriverWithTeams.teams.map((team)=>team.name)
+}
+    return newDriverWithTeams;
 }
 
 module.exports = createDriver
