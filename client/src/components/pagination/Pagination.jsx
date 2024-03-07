@@ -2,8 +2,9 @@ import { useState,useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {Card} from '../card/Card';
 import { saveDrivers } from "../../redux/actions";
+import { ErrorInSearchDriver } from "../errorInSearchDriver/ErrorInSearchDriver";
 
-export const Pagination = ({drivers}) => {
+export const Pagination = ({drivers, error}) => {
     const dispatch = useDispatch()
 //number of pages
     const pages = []
@@ -13,19 +14,30 @@ for(let i = 1; i<= Math.ceil(drivers.length/9); i++){
 const [currentPage, setCurrentPage] = useState(1);
 
 const handleClick = ({ target }) => {
-    if(target.textContent === "Ok"){
+    if(target.value === "No"){
 dispatch(saveDrivers())
     }
-    if(target.textContent !== "Siguiente" && target.textContent !== "Anterior"){
+    if(target.value !== "Siguiente" && target.value !== "Anterior"){
         setCurrentPage(Number(target.textContent))
     }
-    if(target.textContent === "Siguiente"){
-        setCurrentPage(currentPage + 1)
+
+    if(target.value === "Siguiente"){
+        if(currentPage === pages.length){
+            setCurrentPage(pages.length)
+        } else{
+            setCurrentPage(currentPage + 1)
+        }
     }
-    if(target.textContent === "Anterior"){
-        setCurrentPage(currentPage - 1)
+    
+    if(target.value === "Anterior"){
+        if(currentPage === 1){
+            setCurrentPage(1)
+        } else{
+            setCurrentPage(currentPage - 1)
+        }
     }
 };
+console.log(currentPage)
 
 //get drivers in each page
 const [driversInEachPage, setDriversInEachPage] = useState([])
@@ -44,29 +56,30 @@ useEffect(()=>{
     getDriversInEachPage(currentPage)
 }, [drivers])
 
-console.log(drivers)
 return (
         <div>
             <div>
-                {driversInEachPage.map((driver, index) => driver.error ?
-                <div>
-                <p>{driver.error}</p>
-                <button onClick={handleClick}>Ok</button>
-                </div>
-                :
+                {error &&
+             <ErrorInSearchDriver error={error.error} handleClick={handleClick} /> }
+            </div>
+            <div>
+                {drivers.length > 0 && driversInEachPage.map((driver, index) => 
                  <Card driver={driver} key={index}/>
                 )}
-                <div>
-                {pages.map((page, index) => {
+            {drivers.length > 0 &&
+                    <div>
+                        <button onClick={handleClick} value="Anterior">⬅️ Previous</button>
+                        <button onClick={handleClick} value="Siguiente"> Next ➡️</button>
+                        <div>
+                        {pages.map((page, index) => {
                 return <button key={index} onClick={handleClick}>{page} </button>
              })}   
-                <div> 
-                </div> 
-            <button onClick={handleClick}>Anterior</button>
-            <button onClick={handleClick}>Siguiente</button>
+                        </div>
+                    </div>
+                }
           </div>
-            </div>
+
+
         </div>
-   
     );
 };

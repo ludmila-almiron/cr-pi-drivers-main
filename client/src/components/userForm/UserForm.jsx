@@ -3,7 +3,7 @@ import {validations} from './errors'
 import { useDispatch } from 'react-redux'
 import { loginUsers } from '../../redux/actions'
 
-export const UserForm = ({loginUser}) => {
+export const UserForm = ({signUpUser}) => {
 const dispatch = useDispatch()
 const [user, setUser] = useState({
     email: "",
@@ -29,12 +29,10 @@ const handleSubmit = (event) => {
     event.preventDefault()
     if(!errors.email && !errors.password){
     dispatch(loginUsers(user))
-    loginUser()
-    }
-
+    signUpUser()}
 }
-
 console.log(user)
+//console.log(errors)
     return(
         <div>
             <form onSubmit={handleSubmit}>

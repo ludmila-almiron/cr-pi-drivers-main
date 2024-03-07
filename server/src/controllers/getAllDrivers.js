@@ -41,7 +41,7 @@ const getAllDrivers = async (name) => {
             if(driversByName.length !== 0){
                 return driversByName = driversByName.splice(0,15)
             } else{
-                throw new Error('No existen drivers con ese nombre')
+                throw new Error('There are no drivers matching that name. ¿Do you want to create it?')
             }
     }
     else {

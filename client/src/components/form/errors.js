@@ -3,59 +3,63 @@ export const validations = (driver) => {
     const regexNumbers = /\d/
     if(driver.name){
         if(driver.name.length > 50){
-            errors.name = "El nombre no puede tener más de 50 caracteres"
+            errors.name = "The name has too many characters"
         }
         if(regexNumbers.test(driver.name)){
-            errors.name = "El nombre no puede contener numeros"
+            errors.name = "The name can't contain numbers"
         }
+    }
+
+    if(driver.name.length === 0){
+        errors.name = "This field can't be empty"
     }
 
     if(driver.surname){
         if(driver.surname.length > 50){
-            errors.surname = "El apellido no puede tener más de 50 caracteres"
+            errors.surname = "The surname has too many characters"
         }
         if(regexNumbers.test(driver.surname)){
-            errors.surname = "El apellido no puede contener numeros"
+            errors.surname = "The surname can't contain numbers"
         }
+    }
+
+    if(driver.surname.length <1){
+        errors.surname = "This field can't be empty"
     }
 
     if(driver.nationality){
         if(driver.nationality.length > 50){
-            errors.nationality = "La nacionalidad no puede tener más de 50 caracteres"
+            errors.nationality = "Too many characters"
         }
         if(regexNumbers.test(driver.nationality)){
-            errors.nationality = "La nacionalidad no puede contener numeros"
+            errors.nationality = "Tha nationality can't contain numbers"
         }
     }
 
     if(driver.dob){
         const regexDob = /^\d{4}-\d{2}-\d{2}$/
         if(! regexDob.test(driver.dob)){
-        errors.dob = "La fecha de nacimiento debe escribirse en formato 'AAAA-MM-DD'"
+        errors.dob = "The date of birth must be written in 'YYYY-MM-DD' format"
 }
+    }
+
+    if(driver.dob.length === 0){
+        errors.dob = "This field can't be empty"
     }
 
     if(driver.description){
         if(driver.description.length > 500){
-            errors.description = "La descripción no puede tener más de 500 caracteres"
+            errors.description = "Too many characters"
         }
     }
-
-    if(driver.teams){
-        const regexLeters = /[a-zA-Z]/
-        if(regexLeters.test(driver.teams)){
-            errors.teams = "Solo puede ingresar los ids de los teams separados por un espacio"
-        }
-        const regexComma = /,/
-        if(regexComma.test(driver.teams)){
-            errors.teams = "Los ids de los teams solo pueden estar separados por un espacio"
-        }
+    if (!driver.teams) {
+        errors.teams = "The driver must have at list one team";
     }
-
+    
     if(driver.image){
         const regexImageUrl = /^https?:\/\/(?:www\.)?\S+\.(?:jpg|jpeg|png|gif)$/i
         if(! regexImageUrl.test(driver.image)){
-errors.image = "Los únicos formatos válidos son jpg, jpeg, png o gif"
+errors.image = "The only valid formats are jpg, jpeg, png or gif"
         }
     }
 

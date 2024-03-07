@@ -6,6 +6,8 @@ export const SEARCH_DRIVER = 'SEARCH_DRIVER'
 export const CREATE_DRIVER = 'CREATE_DRIVER'
 export const FILTER_DRIVERS = 'FILTER_DRIVERS'
 export const LOGIN_USERS = 'LOGIN_USERS'
+export const FILTER_DRIVERS_DB_BY_TEAM = 'FILTER_DRIVERS_DB_BY_TEAM'
+export const FILTER_DRIVERS_API_BY_TEAM = 'FILTER_DRIVERS_API_BY_TEAM'
 
 export const saveDrivers = () => {
     return async (dispatch) => {
@@ -90,6 +92,21 @@ export const loginUsers = (user) =>{
         payload: user
     }
 }
+
+export const filterDriversDb_By_Team = (filter) =>{
+    return{
+        type: FILTER_DRIVERS_DB_BY_TEAM,
+        payload: filter
+    }
+}
+
+export const filterDrivers_Api_By_Team = (filter)=>{
+    return{
+        type: FILTER_DRIVERS_API_BY_TEAM,
+        payload: filter
+    }
+}
+
 
 
 

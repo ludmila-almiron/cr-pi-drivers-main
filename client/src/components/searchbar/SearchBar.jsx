@@ -10,16 +10,15 @@ const handleChange = ({target}) => {
 setValueSearch(target.value)
 }
 
-const handleClick = () =>{
+const handleSearch = () =>{
 dispatch(searchDriver(valueSearch))
     }
-
 
 
     return (
         <div>
             <input id="inputSearch" value={valueSearch} placeholder="Search driver..." onChange={handleChange} />
-            <button onClick={handleClick}>SEARCH</button>
+            <button onClick={handleSearch}>SEARCH</button>
         </div>
     );
 }

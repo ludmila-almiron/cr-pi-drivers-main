@@ -1,12 +1,15 @@
-import { SAVE_DRIVERS, FILTER_DRIVERS_BY_TEAM, GET_TEAMS, SEARCH_DRIVER, CREATE_DRIVER, FILTER_DRIVERS, LOGIN_USERS } from "./actions"
+import { SAVE_DRIVERS, FILTER_DRIVERS_BY_TEAM, GET_TEAMS, SEARCH_DRIVER, CREATE_DRIVER, FILTER_DRIVERS, LOGIN_USERS, FILTER_DRIVERS_DB_BY_TEAM, FILTER_DRIVERS_API_BY_TEAM } from "./actions"
 
 
 
 const initialState = {
     allDrivers: [],
     filteredDrivers: [],
+    driversDb: [],
+    driversApi: [],
     teams: [],
-    users: []
+    users: [],
+    errors: []
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -15,15 +18,18 @@ const rootReducer = (state = initialState, action) => {
         case SAVE_DRIVERS:
             return {
                 ...state,
-                allDrivers: [...action.payload], 
-                filteredDrivers: [...action.payload]
+                allDrivers: [...action.payload],
+                driversDb: [...action.payload.filter((driver)=>driver.id>508)],
+                driversApi:[...action.payload.filter((driver)=>driver.id<509)],
+                filteredDrivers: [...action.payload],
+                errors: ""
             };
         
         case FILTER_DRIVERS:
             if(action.payload === 'Created by me' ){
                 return{
                     ...state,
-                    filteredDrivers:[...state.allDrivers.filter((driver)=>driver.id>508)]
+                    filteredDrivers:[...state.driversDb]
                 }
 
             }
@@ -31,7 +37,7 @@ const rootReducer = (state = initialState, action) => {
             if(action.payload === 'Original drivers'){
                 return{
                     ...state,
-                    filteredDrivers:[...state.allDrivers.filter((driver)=>driver.id<509)]
+                    filteredDrivers:[...state.driversApi.filter((driver)=>driver.id<509)]
                 }
             }
 
@@ -95,7 +101,9 @@ const rootReducer = (state = initialState, action) => {
             if(action.payload === "Any"){
                 return{
                     ...state,
-                    filteredDrivers:[...state.allDrivers]
+                    filteredDrivers:[...state.filteredDrivers.sort((a,b)=>{
+                        return a.id - b.id
+                    })]
                 }
             }
 
@@ -119,10 +127,19 @@ const rootReducer = (state = initialState, action) => {
             }
         
         case SEARCH_DRIVER:
+            if(!Array.isArray(action.payload)){
             return{
                 ...state,
-                filteredDrivers: [action.payload]
+                filteredDrivers: [],
+                errors: action.payload
             }
+            }else{
+                return{
+                    ...state,
+                    filteredDrivers: [...action.payload]
+                }
+            }
+           
 
         case CREATE_DRIVER:
             return{
@@ -134,6 +151,31 @@ const rootReducer = (state = initialState, action) => {
             return{
                 ...state,
                 users: [...state.users, action.payload]
+            }
+
+        case FILTER_DRIVERS_DB_BY_TEAM:
+            if(action.payload === "All"){
+                return {
+                    ...state,
+                    filteredDrivers:[...state.driversDb] 
+                }
+            }
+            return{
+                ...state,
+                filteredDrivers:[...state.driversDb.filter(
+                    driver => driver.teams.includes(action.payload))]
+            }
+        case FILTER_DRIVERS_API_BY_TEAM:
+            if(action.payload === "All"){
+                return {
+                    ...state,
+                    filteredDrivers:[...state.driversApi] 
+                }
+            }
+            return{
+                ...state,
+                filteredDrivers:[...state.driversApi.filter(
+                    driver => driver.teams.includes(action.payload))]
             }
     default:
     return { ...state };
