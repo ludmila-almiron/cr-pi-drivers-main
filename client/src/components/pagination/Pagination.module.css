@@ -1,0 +1,8 @@
+.container{
+    border: black;
+    background: rgb(94, 94, 94);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items:center;
+}

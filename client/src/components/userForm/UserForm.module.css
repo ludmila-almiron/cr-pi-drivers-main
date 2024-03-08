@@ -1,0 +1,52 @@
+body{
+  background-color: #1d1d1d;
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+.container {
+  display: flex;
+  flex-direction: column; 
+  justify-content:center; 
+  align-items: center; 
+  width: auto;
+  height: auto;
+  max-width: 90%; /* Establece un ancho máximo del 90% del viewport */
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+} 
+  form {
+    display: flex;
+    flex-direction: column; 
+    justify-content:center; 
+    align-items: center;
+    background-image: url('../../imagenFondoDriversForm.jpg');
+    background-repeat: no-repeat;
+    position: relative;
+    border-radius: 20px;
+    width: 892px;
+    height: 334px;
+    max-width: 892px; /* Establece un ancho máximo */
+  }
+  .inputContainer{
+    position: absolute;
+    top: 21%; 
+    left: 37.5%;
+  }
+  .email, .password {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #b3b1b4;
+  }
+  .inputEmail, .inputPassword {
+    width: 140px;
+  }
+.errors{
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #db3c41; 
+}
+

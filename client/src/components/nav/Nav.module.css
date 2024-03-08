@@ -1,0 +1,18 @@
+.container{
+    display: block;
+}
+ .container img{
+border-radius: 10px;
+top: 5%;
+overflow: hidden;
+ }
+  
+ .container h1 {
+color: #A92f36;
+ }
+
+ .home{
+    color: #A92f36;
+    font-size: 35px;
+    border: black;
+ }

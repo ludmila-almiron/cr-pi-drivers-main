@@ -3,7 +3,7 @@ import { Pagination } from '../pagination/Pagination'
 import { useDispatch } from "react-redux";
 import { saveDrivers, filterDrivers, getTeams, filterDriversByTeam, filterDriversDb_By_Team, filterDrivers_Api_By_Team } from '../../redux/actions';
 import { useSelector } from 'react-redux';
-
+import style from './Cards.module.css'
 export const Cards = () => {
 const dispatch = useDispatch()
 const [drivers, setDrivers] = useState([]);
@@ -64,10 +64,8 @@ if(target.value === "All"){
 console.log(filterApi)
 console.log(filterDb)
 return (
-        <div>
-            <div>
+        <div className={style.containerDrivers}>
             <Pagination drivers={drivers} error={error}/>
-            </div>
             <div>
                 {drivers.length > 0 && 
                 <select onChange={handleTeamFilter}>

@@ -4,7 +4,9 @@
   padding: 2rem;
   text-align: center;
 }
-
+.h1{
+  color: red;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -12,10 +14,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #cdb5b5aa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #b51717aa);
 }
 
 @keyframes logo-spin {

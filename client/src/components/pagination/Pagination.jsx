@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {Card} from '../card/Card';
 import { saveDrivers } from "../../redux/actions";
 import { ErrorInSearchDriver } from "../errorInSearchDriver/ErrorInSearchDriver";
+import style from "./Pagination.module.css"
 
 export const Pagination = ({drivers, error}) => {
     const dispatch = useDispatch()
@@ -62,7 +63,8 @@ return (
                 {error &&
              <ErrorInSearchDriver error={error.error} handleClick={handleClick} /> }
             </div>
-            <div>
+            
+            <div  className={style.container}>
                 {drivers.length > 0 && driversInEachPage.map((driver, index) => 
                  <Card driver={driver} key={index}/>
                 )}
