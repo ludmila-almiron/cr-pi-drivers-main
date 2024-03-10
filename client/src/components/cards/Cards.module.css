@@ -1,3 +1,21 @@
 .containerDrivers{
-    background: rgb(182, 3, 3);
+    width: 100%
+}
+.containerAllFilters{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+}
+.containerAllFilters select{
+    width: 20%;
+    text-align: center;
+    border-radius: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #333333;
+    font-size: 16px;
+    margin-bottom: 1%;
+    background-color: #ddded3;
+    outline: 1px solid black
 }

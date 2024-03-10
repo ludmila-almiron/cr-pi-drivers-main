@@ -1,0 +1,47 @@
+.containerSearchBar{
+height: 20vh;
+display: flex;
+flex-flow: row wrap;
+justify-content: start;
+align-items: center;
+width: 40%;
+}
+.containerInput{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+    width: 50%;
+}
+.input{
+    color: rgb(0, 0, 0);
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    outline: 1px solid black;
+    border: 1px solid rgb(148, 147, 147);
+    border-right: none;
+    height: 30%;
+    width: 100%;
+    margin-top: 6%;
+}
+.containerButton{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+}
+.button{
+    background-color: #fbefaf;
+    font-size: 13px;
+    width: 100%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius:0px;
+    border-top-left-radius:0px;
+    outline: 1px solid black;
+    border:  1px solid rgb(148, 147, 147);
+    color: #333333;
+    border-left: none;
+    height: 35.5%;
+}

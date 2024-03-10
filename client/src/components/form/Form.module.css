@@ -1,5 +1,110 @@
-.teamsButtons{
-    color:black;
-    background-color: rgb(215, 22, 22);
-    border: red;
+.container{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: start;
+    align-items: center;
+    height: auto;
+    border-radius: 30px;
+}
+.containerH1Form{
+    background-color: #fbefaf;
+    border-radius: 30px;
+    width: 50%;
+    display: flex;
+    flex-flow: column wrap;
+    align-items:start;
+    justify-content: center;
+    outline: 1px solid black;
+}
+.containerH1{
+    align-self: center;
+    font-size: 9px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #333333
+}
+.containerForm{
+margin-left: 8%;
+display: flex;
+flex-flow: column wrap;
+justify-content: start;
+align-items: start;
+height: auto;
+border-radius: 30px;
+}
+.containerData{
+display: flex;
+flex-flow: column wrap;
+align-items: start;
+width:50%;
+border-radius: 20px;
+}
+.containerInputs{
+display: flex;
+flex-flow: column wrap;
+justify-content:start;
+align-items: start;
+width: 100%;
+font-size: 16px;
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.containerInputs label{
+align-self: flex-start;
+border-radius: 20px;
+color: #333333;
+}
+.inputs{
+border-radius: 5px;
+align-self: flex-start;
+height: 4vh;
+border: none;
+width: 90%;
+}
+
+.description{
+display: flex;
+border-radius: 5px;
+align-self: flex-start;
+height: 4vh;
+border: none;
+width: 90%;
+height: 25vh;
+}
+
+.teams{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content:space-between;
+    align-items: start;
+    gap: 3%;
+    font-size: 16px;
+    margin-right: 9%;
+}
+.containerButtons{
+display: flex;
+flex-flow: column wrap;
+justify-content: start;
+align-items: center;
+margin-right: 8%;
+}
+.button{
+    color:#333333;
+    background-color: #ddded3;
+    font-size: 20px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 30px;
+    outline: 1px solid white;
+    margin-bottom: 1%;
+
+}
+.error{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 22px;
+    color: #9f212e;
+    text-align: center;
+}
+.errors{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    color: #9f212e;  
 }

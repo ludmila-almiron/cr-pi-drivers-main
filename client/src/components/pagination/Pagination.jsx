@@ -12,12 +12,18 @@ export const Pagination = ({drivers, error}) => {
 for(let i = 1; i<= Math.ceil(drivers.length/9); i++){
     pages.push(i)
 }
+console.log(pages)
 const [currentPage, setCurrentPage] = useState(1);
 
 const handleClick = ({ target }) => {
     if(target.value === "No"){
 dispatch(saveDrivers())
     }
+
+if(currentPage > 10 && target.value === "Previous Section"){
+        setCurrentPage(currentPage -1)
+    }
+
     if(target.value !== "Siguiente" && target.value !== "Anterior"){
         setCurrentPage(Number(target.textContent))
     }
@@ -42,6 +48,7 @@ console.log(currentPage)
 
 //get drivers in each page
 const [driversInEachPage, setDriversInEachPage] = useState([])
+const [buttons, setButtons] = useState([])
 
 const getDriversInEachPage = (currentPage) => {
     const indexOfDrivers = currentPage * 9
@@ -50,37 +57,37 @@ const getDriversInEachPage = (currentPage) => {
 
 useEffect(()=>{
     getDriversInEachPage(currentPage)
+    setButtons([...pages.slice(currentPage - 1, currentPage + 9)])
+    console.log(currentPage + 9)
     }, [currentPage])
 
 useEffect(()=>{
     setCurrentPage(1)
     getDriversInEachPage(currentPage)
+    setButtons([...pages.splice(currentPage - 1, currentPage + 9)])
 }, [drivers])
 
-return (
-        <div>
-            <div>
-                {error &&
-             <ErrorInSearchDriver error={error.error} handleClick={handleClick} /> }
-            </div>
-            
-            <div  className={style.container}>
-                {drivers.length > 0 && driversInEachPage.map((driver, index) => 
-                 <Card driver={driver} key={index}/>
-                )}
-            {drivers.length > 0 &&
-                    <div>
-                        <button onClick={handleClick} value="Anterior">⬅️ Previous</button>
-                        <button onClick={handleClick} value="Siguiente"> Next ➡️</button>
-                        <div>
-                        {pages.map((page, index) => {
-                return <button key={index} onClick={handleClick}>{page} </button>
-             })}   
-                        </div>
-                    </div>
-                }
-          </div>
 
+return (
+    <div>
+        <div>
+        {error && <ErrorInSearchDriver error={error.error} handleClick={handleClick} /> }
+        </div>
+
+    {drivers.length > 0 &&
+    <div className={style.containerButtons}>
+    <div><button onClick={handleClick} value="Anterior" className={style.buttons}>◁</button></div>
+    <div>
+    {buttons.map((page, index) => {
+    return <button key={index} onClick={handleClick}
+    className={page === currentPage ? style.currentButton : style.button}>{page}</button>})} </div>
+    <div><button onClick={handleClick} value="Siguiente" className={style.buttons}>▷</button> </div>
+    </div>}    
+    <div  className={style.containerCards}>
+    {drivers.length > 0 && driversInEachPage.map((driver, index) => 
+     <Card driver={driver} key={index}/> 
+                )}
+          </div>
 
         </div>
     );

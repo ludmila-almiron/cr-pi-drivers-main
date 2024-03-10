@@ -1,6 +1,7 @@
 export const validations = (driver) => {
     const errors = {}
     const regexNumbers = /\d/
+    
     if(driver.name){
         if(driver.name.length > 50){
             errors.name = "The name has too many characters"

@@ -58,7 +58,7 @@ const getAllDrivers = async (name) => {
        driversDb = driversDb.map((driver)=>{
             return{
                 ...driver.toJSON(),
-                teams: driver.teams.map((team)=>team.name)
+                teams: driver.teams.map((team)=>team.name),
             }
         })
         return drivers.concat(driversDb);

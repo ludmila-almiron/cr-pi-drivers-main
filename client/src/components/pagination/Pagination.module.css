@@ -1,8 +1,46 @@
 .container{
-    border: black;
-    background: rgb(94, 94, 94);
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items:center;
+}
+.containerCards{
+display: flex;
+flex-flow: row wrap;
+justify-content: space-between;
+align-items: center;
+width: 100%;
+margin-top: 4%;
+}
+
+
+.containerButtons{
+    width: 100%;
+    font-size: 15px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+}
+.button{
+    background-color: #fbefaf;
+    color:#333333;
+    border-radius: 15px;
+    margin-bottom: 3%;
+    outline: 1px solid black;
+}
+.buttons{
+    background-color: #fbefaf;
+    color:#333333;
+    border-radius: 15px;
+    margin-bottom: 29%;
+    outline: 1px solid black;
+}
+
+.currentButton{
+    background-color: #ddded3;
+    color:#393939;
+    border-radius: 15px;
+    outline: 1px solid black
 }

@@ -4,12 +4,15 @@ import axios from 'axios'
 import { createDriver, getTeams, saveDrivers } from "../../redux/actions";
 import { validations } from "./errors";
 import { useSelector } from 'react-redux';
-import {Link} from 'react-router-dom'
 import style from "./Form.module.css"
+import { useNavigate } from 'react-router-dom'
+
 
 
 export const Form =()=>{
 const dispatch = useDispatch()
+const navigate = useNavigate()
+
 const teams = useSelector(state => state.teams)
 const [createdDriver, setCreatedDriver] = useState({
     name: "",
@@ -40,22 +43,11 @@ useEffect(()=>{
  
 const handleSubmit = (event) => {
     event.preventDefault()
+
    const validations = Object.values(driverValidation)
    if(validations.every(validations => ! validations)){
-    const elements = event.target.elements
 
-    let form = {}
-        for (const element of elements){
-            form[element.name]=element.value
-            console.log(element.name)
-            console.log(element.value)
-        }
-        form = {
-            ...form,
-            teams:[...selectedTeams]
-        }
-        console.log(form)
-       axios.post('http://localhost:3001/drivers', form )
+       axios.post('http://localhost:3001/drivers', createdDriver )
                 .then(response => {
     
                     dispatch(createDriver(response.data));
@@ -82,80 +74,95 @@ setDriverValidation(validations({
 }))
 }
 
-const handleTeamSelection =  (id) => {
-   if(selectedTeams.includes(id)){
-    setSelectedTeams([...selectedTeams.filter((teamId)=> teamId !== id)])
+
+const handleTeamSelection =  ({target}) => {
+    console.log(target.value)
+   if(selectedTeams.includes(target.value)){
+    setSelectedTeams([...selectedTeams.filter((teamId)=> teamId !== target.value)])
    } else{
-    setSelectedTeams([...selectedTeams, id])
+    setSelectedTeams([...selectedTeams, target.value])
    }
-   setCreatedDriver({
-    ...createdDriver,
-    teams: [...selectedTeams]
-   })
-   setDriverValidation(validations({
-    ...createdDriver,
-    teams: [...selectedTeams]
-   }))
 }
+
+useEffect(()=>{
+    setCreatedDriver({
+        ...createdDriver,
+        teams: [...selectedTeams]
+       })
+     
+}, [selectedTeams])
+
+useEffect(()=>{
+    setDriverValidation(validations({
+        ...createdDriver,
+        teams: [...selectedTeams]
+       }))
+}, [createdDriver])
+
+const handleClick = () => {
+    navigate('/home')
+}
+
+console.log(createdDriver)
 return (
-    <div>
-        <h1>Create your own driver!</h1>
-        <form onSubmit={handleSubmit} >
-        <div>
-            <label htmlFor="name"> Name: </label>
-            <input type="text" name="name" value={createdDriver.name} onChange={handleForm}/>
-            <p>{driverValidation.name && driverValidation.name}</p>
+    <div className={style.container}>
+        <div className={style.containerH1Form}>
+        <div className={style.containerH1}><h1>CREATE YOUR OWN DRIVER</h1> </div>
+        <div className={style.containerForm}>
+        <form onSubmit={handleSubmit}>
+            <div className={style.containerInputs}>
+            <label htmlFor="name"> NAME </label>
+            <input type="text" name="name" value={createdDriver.name} onChange={handleForm} className={style.inputs}/>
+            <p className={style.errors}>{driverValidation.name && driverValidation.name}</p>
+        <div className={style.containerInputs}>
+            <label htmlFor="surname"> SURNAME</label>
+            <input type="text" name="surname" value={createdDriver.surname} onChange={handleForm}className={style.inputs} />
+            <p className={style.errors}>{driverValidation.surname && driverValidation.surname}</p>
         </div>
-        <div>
-            <label htmlFor="surname"> Surname: </label>
-            <input type="text" name="surname" value={createdDriver.surname} onChange={handleForm}/>
-            <p>{driverValidation.surname && driverValidation.surname}</p>
+        <div className={style.containerInputs}>
+            <label htmlFor="nationality"> NATIONALITY </label>
+            <input type="text" name="nationality" value={createdDriver.nationality} onChange={handleForm} className={style.inputs}/>
+            <p className={style.errors}>{driverValidation.nationality && driverValidation.nationality}</p>
         </div>
-        <div>
-            <label htmlFor="nationality"> Nationality: </label>
-            <input type="text" name="nationality" value={createdDriver.nationality} onChange={handleForm}/>
-            <p>{driverValidation.nationality && driverValidation.nationality}</p>
+        <div className={style.containerInputs}>
+            <label htmlFor="image"> IMAGE </label>
+            <input type="text" name="image" value={createdDriver.image} onChange={handleForm} className={style.inputs}/>
+            <p className={style.errors}>{driverValidation.image && driverValidation.image}</p>
         </div>
-        <div>
-            <label htmlFor="image"> Image: </label>
-            <input type="text" name="image" value={createdDriver.image} onChange={handleForm}/>
-            <p>{driverValidation.image && driverValidation.image}</p>
+        <div className={style.containerInputs}>
+            <label htmlFor="dob"> DOB </label>
+            <input type="text" name="dob" value={createdDriver.dob} onChange={handleForm} className={style.inputs}/>
+            <p className={style.errors}>{driverValidation.dob && driverValidation.dob}</p>
         </div>
-        <div>
-            <label htmlFor="dob"> Dob: </label>
-            <input type="text" name="dob" value={createdDriver.dob} onChange={handleForm}/>
-            <p>{driverValidation.dob && driverValidation.dob}</p>
+        <div className={style.containerInputs}>
+            <label htmlFor="description"> DESCRIPTION </label>
+            <input type="text" name="description" value={createdDriver.description} onChange={handleForm} className={style.description}/>
+            <p className={style.errors}>{driverValidation.description && driverValidation.description}</p>
         </div>
-        <div>
-            <label htmlFor="description"> Description: </label>
-            <input type="text" name="description" value={createdDriver.description} onChange={handleForm}/>
-            <p>{driverValidation.description && driverValidation.description}</p>
         </div>
-        <div>
-        <label htmlFor="teams">Teams:</label>
-        <p>{driverValidation.teams && driverValidation.teams}</p>
-        <div>
-    {teams.map((team) => (
-      <label key={team.id}>
-        <input
-          type="checkbox"
-          value={team.id}
-          checked={selectedTeams.includes(team.id)}
-          onChange={() => handleTeamSelection(team.id)}
-          className={style.teamsButtons}
-        />
-        {team.name}
+        <div className={style.containerInputs}>
+            <label htmlFor="teams" >CHOOSE HIS TEAMS</label>
+            <p className={style.errors}>{driverValidation.teams && driverValidation.teams}</p>
+            <div className={style.teams}> {teams.map((team) => (<label key={team.id} >
+            <input type="checkbox" value={team.id}
+            onChange={handleTeamSelection}/>
+            {team.name}
       </label>
     ))}
   </div>
-        </div>
-        <p> {showError && showError}</p>
+  </div>
+        <div className={style.containerButtons}>
+        <p className={style.error}> {showError && showError}</p>
         {createdSuccesfully && 
-        <button><Link to="/home">Return to home</Link></button>}
-        <div>
-            <button type="submit" >CREATE</button>
+        <button className={style.button} onClick={handleClick}>BACK TO HOME</button>}
+        <button type="submit"  className={style.button}>CREATE</button>
         </div>
       </form>
+             </div>
+        </div>
+        
+        
+        
 
     </div>
 )

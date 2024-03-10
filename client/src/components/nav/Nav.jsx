@@ -1,20 +1,19 @@
-import {Link} from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
 import style from './Nav.module.css'
+import { useNavigate } from 'react-router-dom'
+
 
 const Nav = () => {
-const location = useLocation()
+const navigate = useNavigate ()
+
+const handleClick = () => {
+    navigate('/home')
+}
     return (
-        <div>
-            {location.pathname === '/' &&
-            <div className={style.container}>  
-            <h1>Explore all the drivers! </h1>
-            <img src='https://i.pinimg.com/originals/b7/5c/f0/b75cf09a8e43fef0424c9d2237462f93.gif'></img>
-            </div >}
-            {location.pathname !== '/home' &&
-           <Link to="/home" className={style.home}> 🏁 HOME 🏁</Link>
-            }
-          
+        <div className={style.containerLanding}> 
+        <div className={style.containerImg}> <img src='https://i.pinimg.com/564x/b6/0c/90/b60c90ed61bbd04cc298f9ece2b40dd0.jpg'className={style.img}></img></div>
+        <div className={style.containerH1Home}>
+        <div className={style.containerH1}><h1 className={style.h1}> EXPLORE ALL THE DRIVERS </h1></div>
+        <div className={style.containerHome}> <button className={style.home} onClick={handleClick}>LET'S GO 🏁</button></div> </div>
         </div>
     )
 }

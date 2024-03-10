@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { searchDriver } from "../../redux/actions";
 import { useState } from "react";
+import style from './SearchBar.module.css'
 
 export const SearchBar = () => {
 const dispatch = useDispatch()
@@ -12,13 +13,14 @@ setValueSearch(target.value)
 
 const handleSearch = () =>{
 dispatch(searchDriver(valueSearch))
+setValueSearch("")
     }
 
 
-    return (
-        <div>
-            <input id="inputSearch" value={valueSearch} placeholder="Search driver..." onChange={handleChange} />
-            <button onClick={handleSearch}>SEARCH</button>
-        </div>
+return (
+    <div className={style.containerSearchBar}>
+    <div className={style.containerInput}><input id="inputSearch" value={valueSearch} placeholder="Search driver..." onChange={handleChange} className={style.input} /> </div>
+    <div className={style.containerButton}><button onClick={handleSearch} className={style.button}>SEARCH</button>  </div>    
+    </div>
     );
 }

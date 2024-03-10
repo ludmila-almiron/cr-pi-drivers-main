@@ -1,15 +1,15 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-//import image from '../../../../images/driverWithoutImage.jpg'
-
+import style from './Detail.module.css'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 export const Detail = () =>{
 
 const { id } = useParams()
-console.log(id)
-
 const [driver, setDriver] = useState([])
-console.log(driver)
+const [showDescription, setShowDesccription] = useState(false)
+const navigate = useNavigate()
 
 useEffect(()=>{
     try{
@@ -25,26 +25,36 @@ useEffect(()=>{
 
 }, [])
 
-const {image, name, teams, dob, description, nationality, number, surname} = driver
-console.log(teams)
+const handleClick = () =>{
+navigate('/home')
+}
+
+
+
+let {image, name, teams, dob, description, nationality, number, surname} = driver
+
+
+dob ? dob = driver.dob.split('T')[0] : dob
+
 return (
-    <div>
+    <div className={style.container}>
+        <div className={style.containerImgButton}>
         <img src={image} width="300" height="350"></img>
-        <div> ID: {id} </div>
-<div> Name:{name} {surname} </div>
-<div>Dob: {dob}</div>
-<div> Nationality: {nationality}</div>
-{teams && (
-    <div> Teams: {teams.join(', ')}</div>
-)}
-{number && number !== "\\N" && (
-<div> Number: {number} </div>
-)}
-{description && (
-    <div>
-        Description: {description}
-    </div>
-)}
-    </div>
-)
+        <button className={style.button} onClick={handleClick}><>BACK TO HOME</></button>
+        </div>
+        <div className={style.containerData}>
+        <div className={style.name}> 🏁 {name && name.toUpperCase()} {surname && surname.toUpperCase()}</div>
+        {teams && (
+        <div className={style.datos}> {teams.join(', ')}</div>)}
+        <div className={style.datos}> ID {id} </div>
+        <div className={style.datos}> born {dob}</div>
+        <div className={style.datos}> {nationality}</div>
+        {number && number !== "\\N" && (
+        <div className={style.datos} > Number {number} </div>)}
+        {description && (<div className={style.containerDescription}>
+            <p className={style.description}>{description}</p>
+        </div>)}
+        </div>  
+</div>
+    )
 }

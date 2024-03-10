@@ -21,13 +21,13 @@ const signUpUser = () =>{
   //useEffect(() => {!access && navigate("/")}, [access])
   return (
     
-    <div>
+    <div className="app-container">
       {access && location.pathname === '/' && <Nav />}
       <Routes>
-      <Route path="/" element={<UserForm signUpUser={signUpUser}/>} />
+      <Route path="/" element={<Nav/>}></Route>
+      <Route path="/create" element={<Form/>} />
       <Route path="/home" element={<Home />} />
       <Route path="/detail/:id" element={<Detail/>} />
-      <Route path="/create" element={<Form/>} />
       </Routes>
     </div>
   )

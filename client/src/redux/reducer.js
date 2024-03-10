@@ -1,7 +1,5 @@
 import { SAVE_DRIVERS, FILTER_DRIVERS_BY_TEAM, GET_TEAMS, SEARCH_DRIVER, CREATE_DRIVER, FILTER_DRIVERS, LOGIN_USERS, FILTER_DRIVERS_DB_BY_TEAM, FILTER_DRIVERS_API_BY_TEAM } from "./actions"
 
-
-
 const initialState = {
     allDrivers: [],
     filteredDrivers: [],
@@ -54,7 +52,6 @@ const rootReducer = (state = initialState, action) => {
                         if (nameA > nameB) {
                           return 1; 
                         }
-                        
                         return 0; 
                       })]
                 }
@@ -85,7 +82,7 @@ const rootReducer = (state = initialState, action) => {
                         const dateB = new Date(b.dob);
                         return dateA - dateB;
                       })]
-                }
+                      }
             }
             
             if(action.payload === 'Order By Dob Descendant'){

@@ -65,41 +65,34 @@ console.log(filterApi)
 console.log(filterDb)
 return (
         <div className={style.containerDrivers}>
-            <Pagination drivers={drivers} error={error}/>
-            <div>
+            <div className={style.containerAllFilters}> 
                 {drivers.length > 0 && 
                 <select onChange={handleTeamFilter}>
-                <optgroup label="Filtros">Filter by team</optgroup>
+                <option value="All">FILTER BY TEAM</option>
                 <option value="All">All</option>
                 {teams.map((team) =>
                 <option value={team.name} key={team.id}>{team.name}</option>
                 )}
             </select>
                 }
-                {drivers.length > 0 && <span> Filter by team</span>}
-
-              </div>
-                <div>
                     {drivers.length > 0 && 
                     <select onChange={handleFiltersDbApi}>
+                    <option value="All">FILTER BY ORIGIN</option>
                     <option value="All">All</option>
                     <option value="Created by me">Created By Me</option>
                     <option value="Original drivers">Original Drivers</option>
                 </select>}
-                    {drivers.length > 0 && <span> Filter created drivers</span>}
-                </div>
-                
-                <div> {drivers.length >0 &&
+                {drivers.length >0 &&
                  <select onChange={handleFilters}>
+                <option value="Any">ORDER</option>
                  <option value="Any">Any</option>
                  <option value="Alphabetically Ascendant">Order Alphabetically ⬆ </option>
                  <option value="Alphabetically Descendant">Order Alphabetically ⬇ </option>
                  <option value="Order By Dob Ascendant">Order By Dob ⬆ </option>
                  <option value="Order By Dob Descendant">Order By Dob ⬇ </option>
              </select>}
-             {drivers.length > 0 && <span> Order by name or by dob</span>}
-             </div>
-            
+            </div>
+            <Pagination drivers={drivers} error={error}/>
         </div>
     );
 }
