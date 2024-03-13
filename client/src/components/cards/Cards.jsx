@@ -7,41 +7,25 @@ import style from './Cards.module.css'
 
 
 export const Cards = () => {
+
 const dispatch = useDispatch()
-
-useEffect(()=>{
-    if(detail === false){
-        dispatch(saveDrivers())
-        dispatch(getTeams())
-    }
-    if(detail && currentFilters_state.teams !== "All"){
-        setFilterTeams(true)
-        const target = {value: currentFilters_state.teams}
-        handleTeamFilter({ target })
-    }
-    if(detail && currentFilters_state.origin !== "All"){
-        const target = {value: currentFilters_state.origin}
-        handleFiltersDbApi({target})
-    }
-    
-    }, [])
-
+//STATES
 const [drivers, setDrivers] = useState([]);
 const [teams, setTeams] = useState([])
 const[filterDb, setFilterDb] = useState(false)
 const[filterApi, setFilterApi] = useState(false)
 const [filterTeams, setFilterTeams] = useState(false)
-const[currentTeam, setCurrentTeam] = useState("")
 
+//STORE
 const renderizedDrivers = useSelector(state => state.filteredDrivers);
 const allTeams = useSelector(state => state.teams)
 const error = useSelector(state => state.errors)
 const detail = useSelector(state => state.detail)
 const currentFilters_state = useSelector(state => state.currentFilters)
 
+//HANDLERS
 const handleTeamFilter = ({target}) => {
 setFilterTeams(true)
-setCurrentTeam(target.value)
 dispatch(currentFilters({ teams: target.value }))
 
 if(filterDb || currentFilters_state.origin !== "Created by me"){
@@ -78,21 +62,22 @@ if(!filterTeams && currentFilters_state.teams === "All" && target.value === "Ori
 if(target.value === "Created by me" && filterTeams){
 setFilterDb(true)
 setFilterApi(false)
-dispatch(filterDriversDb_By_Team(currentTeam))
+dispatch(filterDriversDb_By_Team(currentFilters_state.teams))
 }
 if(target.value === "Original drivers" && filterTeams){
     setFilterApi(true)
     setFilterDb(false)
-dispatch(filterDrivers_Api_By_Team(currentTeam))
+dispatch(filterDrivers_Api_By_Team(currentFilters_state.teams))
 }
 
 if(target.value === "All" && filterTeams){
     setFilterApi(false)
     setFilterDb(false)
-    dispatch(filterDriversByTeam(currentTeam))
+    dispatch(filterDriversByTeam(currentFilters_state.teams))
 }
 }
 
+//USE EFFECT
 useEffect(()=>{
     setDrivers(renderizedDrivers)
     }, [renderizedDrivers])
@@ -101,9 +86,22 @@ useEffect(()=>{
     setTeams(allTeams)
     }, [allTeams])
 
-
-
-console.log(filterTeams)
+useEffect(()=>{
+        if(detail === false){
+            dispatch(saveDrivers())
+            dispatch(getTeams())
+        }
+        if(detail && currentFilters_state.teams !== "All"){
+            setFilterTeams(true)
+            const target = {value: currentFilters_state.teams}
+            handleTeamFilter({ target })
+        }
+        if(detail && currentFilters_state.origin !== "All"){
+            const target = {value: currentFilters_state.origin}
+            handleFiltersDbApi({target})
+        }
+        
+        }, [])
 
 return (
         <div className={style.containerDrivers}>
@@ -115,7 +113,6 @@ return (
                 <option value={team.name} key={team.id}>{team.name}</option>
                 )}
             </select>
-                
                     <select onChange={handleFiltersDbApi}>
                     <option value="All">FILTER BY ORIGIN</option>
                     <option value="All">All</option>
@@ -131,6 +128,7 @@ return (
                  <option value="Order By Dob Descendant">Order By Dob ⬇ </option>
              </select>
             </div>
+            { (filterDb || filterApi || filterTeams) && renderizedDrivers.length === 0 && !error && <p className={style.p}>NO DRIVERS FOUND</p> }
             <Pagination drivers={drivers} error={error}/>
         </div>
     );
