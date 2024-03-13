@@ -32,7 +32,9 @@ const getDriverById = async (id) => {
             
             driver = {
                 ...driver.toJSON(),
-                teams: driver.teams.map((team) => team.name)
+                teams: driver.teams.map((team) => team.name),
+                image: driver.image ? driver.image : 'https://tse4.mm.bing.net/th?id=OIP.EDPv_VX7fYKJSCMBCzqqnQEsDS&pid=Api&P=0&h=180'
+
             };
             return driver;
         }

@@ -64,6 +64,7 @@ width: 90%;
 display: flex;
 border-radius: 5px;
 align-self: flex-start;
+justify-content: start;
 height: 4vh;
 border: none;
 width: 90%;

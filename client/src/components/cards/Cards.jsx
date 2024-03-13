@@ -1,68 +1,104 @@
 import { useState, useEffect } from 'react';
 import { Pagination } from '../pagination/Pagination'
 import { useDispatch } from "react-redux";
-import { saveDrivers, filterDrivers, getTeams, filterDriversByTeam, filterDriversDb_By_Team, filterDrivers_Api_By_Team } from '../../redux/actions';
+import { saveDrivers, filterDrivers, getTeams, filterDriversByTeam, filterDriversDb_By_Team, filterDrivers_Api_By_Team, currentFilters } from '../../redux/actions';
 import { useSelector } from 'react-redux';
 import style from './Cards.module.css'
+
+
 export const Cards = () => {
 const dispatch = useDispatch()
+
+useEffect(()=>{
+    if(detail === false){
+        dispatch(saveDrivers())
+        dispatch(getTeams())
+    }
+    if(detail && currentFilters_state.teams !== "All"){
+        setFilterTeams(true)
+        const target = {value: currentFilters_state.teams}
+        handleTeamFilter({ target })
+    }
+    if(detail && currentFilters_state.origin !== "All"){
+        const target = {value: currentFilters_state.origin}
+        handleFiltersDbApi({target})
+    }
+    
+    }, [])
+
 const [drivers, setDrivers] = useState([]);
 const [teams, setTeams] = useState([])
-const allDrivers = useSelector(state => state.filteredDrivers);
+const[filterDb, setFilterDb] = useState(false)
+const[filterApi, setFilterApi] = useState(false)
+const [filterTeams, setFilterTeams] = useState(false)
+const[currentTeam, setCurrentTeam] = useState("")
+
+const renderizedDrivers = useSelector(state => state.filteredDrivers);
 const allTeams = useSelector(state => state.teams)
 const error = useSelector(state => state.errors)
+const detail = useSelector(state => state.detail)
+const currentFilters_state = useSelector(state => state.currentFilters)
 
 const handleTeamFilter = ({target}) => {
+setFilterTeams(true)
+setCurrentTeam(target.value)
+dispatch(currentFilters({ teams: target.value }))
+
 if(filterDb){
     dispatch(filterDriversDb_By_Team(target.value))
 }
+
 if(filterApi){
     dispatch(filterDrivers_Api_By_Team(target.value))
 }
 
-if(!filterApi && !filterDb){
+if(!filterApi && !filterDb && currentFilters_state.origin === "All"){
 dispatch(filterDriversByTeam(target.value))
 }
 }
 
-const handleFilters = ({target}) =>{
+const handleOrder = ({target}) =>{
     dispatch(filterDrivers(target.value))
 }
-useEffect(() =>{
-    dispatch(saveDrivers())
-    dispatch(getTeams())
-    }, [])
+
+const handleFiltersDbApi = ({target}) =>{
+
+dispatch(currentFilters({origin: target.value}))
+
+if(!filterTeams && currentFilters_state.teams === "All"){
+dispatch(filterDrivers(target.value))
+}
+
+if(target.value === "Created by me" && filterTeams){
+setFilterDb(true)
+setFilterApi(false)
+dispatch(filterDriversDb_By_Team(currentTeam))
+}
+if(target.value === "Original drivers" && filterTeams){
+    setFilterApi(true)
+    setFilterDb(false)
+dispatch(filterDrivers_Api_By_Team(currentTeam))
+}
+
+if(target.value === "All" && filterTeams){
+    setFilterApi(false)
+    setFilterDb(false)
+    dispatch(filterDriversByTeam(currentTeam))
+}
+}
 
 useEffect(()=>{
-    setDrivers(allDrivers)
-    }, [allDrivers])
+    setDrivers(renderizedDrivers)
+    }, [renderizedDrivers])
 
 useEffect(()=>{
     setTeams(allTeams)
     }, [allTeams])
 
-const[filterDb, setFilterDb] = useState(false)
-const[filterApi, setFilterApi] = useState(false)
 
-const handleFiltersDbApi = ({target}) =>{
-dispatch(filterDrivers(target.value))
 
-if(target.value === "Created by me"){
-setFilterDb(true)
-setFilterApi(false)
-}
-if(target.value === "Original drivers" ){
-    setFilterApi(true)
-    setFilterDb(false)
-}
-if(target.value === "All"){
-    setFilterApi(false)
-    setFilterDb(false)
-}
-}
+console.log(filterTeams)
 
-console.log(filterApi)
-console.log(filterDb)
 return (
         <div className={style.containerDrivers}>
             <div className={style.containerAllFilters}> 
@@ -83,7 +119,7 @@ return (
                     <option value="Original drivers">Original Drivers</option>
                 </select>}
                 {drivers.length >0 &&
-                 <select onChange={handleFilters}>
+                 <select onChange={handleOrder}>
                 <option value="Any">ORDER</option>
                  <option value="Any">Any</option>
                  <option value="Alphabetically Ascendant">Order Alphabetically ⬆ </option>
@@ -96,4 +132,3 @@ return (
         </div>
     );
 }
-

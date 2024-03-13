@@ -1,9 +1,18 @@
 import style from './Nav.module.css'
+import { saveDrivers, getTeams } from '../../redux/actions'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 
 
 const Nav = () => {
 const navigate = useNavigate ()
+const dispatch = useDispatch()
+
+useEffect(() =>{
+    dispatch(saveDrivers())
+    dispatch(getTeams())
+    },[])
 
 const handleClick = () => {
     navigate('/home')

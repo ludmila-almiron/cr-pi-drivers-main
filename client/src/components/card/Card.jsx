@@ -11,7 +11,7 @@ export const Card = ({driver})=> {
             </div>
             <div className={style.teams}>
             {teams && teams.map((team, index) => (
-            <div key={index} className={style.team} >{team.toUpperCase()} </div>))}</div>
+            <div key={index} className={style.team} >{team && team.toUpperCase()} </div>))}</div>
             </div>
         </div>
     )

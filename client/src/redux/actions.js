@@ -8,6 +8,9 @@ export const FILTER_DRIVERS = 'FILTER_DRIVERS'
 export const LOGIN_USERS = 'LOGIN_USERS'
 export const FILTER_DRIVERS_DB_BY_TEAM = 'FILTER_DRIVERS_DB_BY_TEAM'
 export const FILTER_DRIVERS_API_BY_TEAM = 'FILTER_DRIVERS_API_BY_TEAM'
+export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
+export const FILTER_DRIVERS_COPY = 'FILTER_DRIVERS_COPY'
+export const CURRENT_FILTERS = 'CURRENT_FILTERS'
 
 export const saveDrivers = () => {
     return async (dispatch) => {
@@ -107,7 +110,23 @@ export const filterDrivers_Api_By_Team = (filter)=>{
     }
 }
 
+export const set_current_page = (page) =>{
+    return{
+        type: SET_CURRENT_PAGE,
+        payload: page !== null ? page : 1
+    }
+}
 
+export const filterDriversCopy = () => {
+    return{
+        type: FILTER_DRIVERS_COPY,
+        payload: ""
+    }
+}
 
-
-
+export const currentFilters = (filters) =>{
+return{
+    type: CURRENT_FILTERS,
+    payload: filters
+}
+}

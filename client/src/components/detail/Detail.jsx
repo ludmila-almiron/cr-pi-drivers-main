@@ -2,14 +2,23 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import style from './Detail.module.css'
-import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { filterDriversCopy } from '../../redux/actions'
+
 export const Detail = () =>{
 
 const { id } = useParams()
+const dispatch = useDispatch()
 const [driver, setDriver] = useState([])
-const [showDescription, setShowDesccription] = useState(false)
+
+useEffect(()=>{
+dispatch(filterDriversCopy())
+}, [])
+
+
 const navigate = useNavigate()
+
 
 useEffect(()=>{
     try{
@@ -25,9 +34,12 @@ useEffect(()=>{
 
 }, [])
 
+
 const handleClick = () =>{
 navigate('/home')
 }
+
+
 
 
 

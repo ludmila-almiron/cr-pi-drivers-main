@@ -1,13 +1,19 @@
-import { SAVE_DRIVERS, FILTER_DRIVERS_BY_TEAM, GET_TEAMS, SEARCH_DRIVER, CREATE_DRIVER, FILTER_DRIVERS, LOGIN_USERS, FILTER_DRIVERS_DB_BY_TEAM, FILTER_DRIVERS_API_BY_TEAM } from "./actions"
+import { SAVE_DRIVERS, FILTER_DRIVERS_BY_TEAM, GET_TEAMS, SEARCH_DRIVER, CREATE_DRIVER, FILTER_DRIVERS, LOGIN_USERS, FILTER_DRIVERS_DB_BY_TEAM, FILTER_DRIVERS_API_BY_TEAM, SET_CURRENT_PAGE, FILTER_DRIVERS_COPY, CURRENT_FILTERS} from "./actions"
 
 const initialState = {
     allDrivers: [],
     filteredDrivers: [],
+    filteredDriversCopy: [],
     driversDb: [],
     driversApi: [],
     teams: [],
-    users: [],
-    errors: []
+    errors: "",
+    currentPage: 1,
+    detail: false,
+    currentFilters:{
+        teams: "All",
+        origin: "All",
+    }
 }
 
 const rootReducer = (state = initialState, action) => {
@@ -17,43 +23,49 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 allDrivers: [...action.payload],
+                filteredDrivers: [...action.payload],
+                filteredDriversCopy: [...action.payload],
                 driversDb: [...action.payload.filter((driver)=>driver.id>508)],
                 driversApi:[...action.payload.filter((driver)=>driver.id<509)],
-                filteredDrivers: [...action.payload],
-                errors: ""
+                errors: "",
+                currentPage: 1
             };
+
+        case FILTER_DRIVERS_COPY:
+            return{
+                ...state,
+                detail: true,
+                filteredDriversCopy:[...state.filteredDrivers]
+            }
+   
+        case SET_CURRENT_PAGE:
+            return{
+                ...state,
+                currentPage: action.payload !== null ? action.payload : 1
+            }
         
         case FILTER_DRIVERS:
             if(action.payload === 'Created by me' ){
                 return{
                     ...state,
-                    filteredDrivers:[...state.driversDb]
+                    filteredDrivers:[...state.driversDb],
+                    currentPage: 1
                 }
-
             }
 
             if(action.payload === 'Original drivers'){
                 return{
                     ...state,
-                    filteredDrivers:[...state.driversApi.filter((driver)=>driver.id<509)]
+                    filteredDrivers:[...state.driversApi]
                 }
             }
 
             if(action.payload === 'Alphabetically Ascendant'){
                 return{
                     ...state,
-                    filteredDrivers:[...state.filteredDrivers.sort((a, b) => {
-                        const nameA = a.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        const nameB = b.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        
-                        if (nameA < nameB) {
-                          return -1; 
-                        }
-                        if (nameA > nameB) {
-                          return 1; 
-                        }
-                        return 0; 
-                      })]
+                    filteredDrivers: [...state.filteredDrivers.sort((a, b) => {
+                        return a.name.localeCompare(b.name);
+                    })]
                 }
             }
 
@@ -61,16 +73,8 @@ const rootReducer = (state = initialState, action) => {
                 return{
                     ...state,
                     filteredDrivers:[...state.filteredDrivers.sort((a, b) => {
-                        const nameA = a.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        const nameB = b.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                        if (nameB < nameA) {
-                            return -1; 
-                        }
-                        if (nameB > nameA) {
-                            return 1; 
-                        } 
-                        return 0; 
-                      })]
+                        return b.name.localeCompare(a.name);
+                    })]
                 }
             }
 
@@ -108,11 +112,13 @@ const rootReducer = (state = initialState, action) => {
             if(action.payload === "All"){
                 return {
                     ...state,
+                    currentPage: 1,
                     filteredDrivers:[...state.allDrivers] 
                 }
             }
             return{
                     ...state,
+                    currentPage: 1,
                     filteredDrivers:[...state.allDrivers.filter(
                         driver => driver.teams.includes(action.payload))]
                 }
@@ -128,12 +134,15 @@ const rootReducer = (state = initialState, action) => {
             return{
                 ...state,
                 filteredDrivers: [],
-                errors: action.payload
+                errors: action.payload,
+                currentPage: 1
+
             }
             }else{
                 return{
                     ...state,
-                    filteredDrivers: [...action.payload]
+                    filteredDrivers: [...action.payload],
+                    currentPage: 1
                 }
             }
            
@@ -162,6 +171,7 @@ const rootReducer = (state = initialState, action) => {
                 filteredDrivers:[...state.driversDb.filter(
                     driver => driver.teams.includes(action.payload))]
             }
+
         case FILTER_DRIVERS_API_BY_TEAM:
             if(action.payload === "All"){
                 return {
@@ -174,6 +184,13 @@ const rootReducer = (state = initialState, action) => {
                 filteredDrivers:[...state.driversApi.filter(
                     driver => driver.teams.includes(action.payload))]
             }
+
+        case CURRENT_FILTERS:
+            return{
+                ...state,
+                currentFilters: {...state.currentFilters, ...action.payload}
+            }
+    
     default:
     return { ...state };
 };

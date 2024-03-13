@@ -34,7 +34,8 @@ const getAllDrivers = async (name) => {
             driversDb = driversDb.map((driver)=>{
                 return{
                     ...driver.toJSON(),
-                    teams: driver.teams.map((team)=>team.name)
+                    teams: driver.teams.map((team)=>team.name),
+                    image: driver.image ? driver.image : 'https://tse4.mm.bing.net/th?id=OIP.EDPv_VX7fYKJSCMBCzqqnQEsDS&pid=Api&P=0&h=180'
                 }
             })
             driversByName = driversByName.concat(driversDb)
@@ -59,6 +60,7 @@ const getAllDrivers = async (name) => {
             return{
                 ...driver.toJSON(),
                 teams: driver.teams.map((team)=>team.name),
+                image: driver.image ? driver.image : 'https://tse4.mm.bing.net/th?id=OIP.EDPv_VX7fYKJSCMBCzqqnQEsDS&pid=Api&P=0&h=180'
             }
         })
         return drivers.concat(driversDb);
