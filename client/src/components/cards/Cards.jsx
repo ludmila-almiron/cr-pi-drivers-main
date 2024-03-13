@@ -44,11 +44,11 @@ setFilterTeams(true)
 setCurrentTeam(target.value)
 dispatch(currentFilters({ teams: target.value }))
 
-if(filterDb){
+if(filterDb || currentFilters_state.origin !== "Created by me"){
     dispatch(filterDriversDb_By_Team(target.value))
 }
 
-if(filterApi){
+if(filterApi || currentFilters_state.origin === "Original drivers"){
     dispatch(filterDrivers_Api_By_Team(target.value))
 }
 
@@ -62,11 +62,17 @@ const handleOrder = ({target}) =>{
 }
 
 const handleFiltersDbApi = ({target}) =>{
-
 dispatch(currentFilters({origin: target.value}))
 
-if(!filterTeams && currentFilters_state.teams === "All"){
+if(!filterTeams && currentFilters_state.teams === "All" && target.value === "Created by me" ){
+setFilterDb(true)
+setFilterApi(false)
 dispatch(filterDrivers(target.value))
+}
+if(!filterTeams && currentFilters_state.teams === "All" && target.value === "Original drivers" ){
+    setFilterApi(true)
+    setFilterDb(false)
+    dispatch(filterDrivers(target.value))
 }
 
 if(target.value === "Created by me" && filterTeams){
@@ -102,7 +108,6 @@ console.log(filterTeams)
 return (
         <div className={style.containerDrivers}>
             <div className={style.containerAllFilters}> 
-                {drivers.length > 0 && 
                 <select onChange={handleTeamFilter}>
                 <option value="All">FILTER BY TEAM</option>
                 <option value="All">All</option>
@@ -110,15 +115,13 @@ return (
                 <option value={team.name} key={team.id}>{team.name}</option>
                 )}
             </select>
-                }
-                    {drivers.length > 0 && 
+                
                     <select onChange={handleFiltersDbApi}>
                     <option value="All">FILTER BY ORIGIN</option>
                     <option value="All">All</option>
                     <option value="Created by me">Created By Me</option>
                     <option value="Original drivers">Original Drivers</option>
-                </select>}
-                {drivers.length >0 &&
+                </select>
                  <select onChange={handleOrder}>
                 <option value="Any">ORDER</option>
                  <option value="Any">Any</option>
@@ -126,7 +129,7 @@ return (
                  <option value="Alphabetically Descendant">Order Alphabetically ⬇ </option>
                  <option value="Order By Dob Ascendant">Order By Dob ⬆ </option>
                  <option value="Order By Dob Descendant">Order By Dob ⬇ </option>
-             </select>}
+             </select>
             </div>
             <Pagination drivers={drivers} error={error}/>
         </div>
