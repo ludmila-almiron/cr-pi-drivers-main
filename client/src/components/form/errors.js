@@ -48,7 +48,7 @@ export const validations = (driver) => {
     }
 
     if(driver.description){
-        if(driver.description.length > 500){
+        if(driver.description.length > 1000){
             errors.description = "Too many characters"
         }
     }
