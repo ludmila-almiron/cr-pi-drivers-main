@@ -62,8 +62,8 @@ getDriversInEachPage(current_Page_State)
 setButtons([...pages.slice(current_Page_State - 1, current_Page_State + 9)])    
 }, [drivers])
 
-console.log(current_Page_State)
-console.log(buttons)
+
+
 return (
     <div>
     {drivers.length > 0 &&

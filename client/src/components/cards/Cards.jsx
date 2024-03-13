@@ -28,7 +28,7 @@ const handleTeamFilter = ({target}) => {
 setFilterTeams(true)
 dispatch(currentFilters({ teams: target.value }))
 
-if(filterDb || currentFilters_state.origin !== "Created by me"){
+if(filterDb || currentFilters_state.origin === "Created by me"){
     dispatch(filterDriversDb_By_Team(target.value))
 }
 
@@ -102,6 +102,9 @@ useEffect(()=>{
         }
         
         }, [])
+console.log(filterApi)
+console.log(filterDb)
+console.log(filterTeams)
 
 return (
         <div className={style.containerDrivers}>
